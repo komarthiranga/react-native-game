@@ -1,14 +1,31 @@
 import { SafeAreaView, StyleSheet, Text, TextInput } from "react-native";
 import CustomButton from "./Core/Button";
+import GameContext from "../Store/game-context";
+import { useContext } from 'react';
 
-const InputContainer = () => {
+const InputContainer = ({navigation}) => {
+
+  const { setNumber, number } = useContext(GameContext);
+
+  const handleReset = () => {
+    setNumber('');
+  }
+
+  const handleConfirm = () => {
+    navigation.navigate('ComputerGuess')
+  }
+
+  const handleTextChange = (number) => {
+    setNumber(number);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.textInput}> Enter a number </Text>
-      <TextInput style={styles.textInputContainer} keyboardType="numeric" />
+      <TextInput style={styles.textInputContainer} keyboardType="numeric" onChangeText={handleTextChange} value={number} />
       <SafeAreaView style={styles.buttonContainer}>
-        <CustomButton title={'Reset'}  color={'#767070'} />
-        <CustomButton title={'Confirm'} color={'#F400FF'} />
+        <CustomButton title={'Reset'}  color={'#767070'} pressHandler={handleReset} />
+        <CustomButton title={'Confirm'} color={'#F400FF'} pressHandler={handleConfirm}  />
       </SafeAreaView>
     </SafeAreaView>
   );
